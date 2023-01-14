@@ -30,7 +30,6 @@ glow((error, pi) => {
         
         process.on('SIGINT', function() {
             console.log('Caught interrupt signal');
-            // Turn off all
             
             LIGHTS.forEach((light) => {
                 light.destroy();
@@ -58,7 +57,6 @@ class Light {
     setValue(value) {
         this.value = Math.max(0, Math.min(255, value));
         this.pi[this.pinId] = this.value;
-        console.log(`Light ${this.pinId}`);
     }
     
     random() {
