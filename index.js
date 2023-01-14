@@ -35,11 +35,11 @@ glow((error, pi) => {
         
             setTimeout(function() {         
                 pi[PINS[index]] = 0;
-            }, 500);
+            }, 100);
 
             if (index >= PINS.length) {
                 index = 0;
             }
-        }, 500);
+        }, 250);
     }
 });
