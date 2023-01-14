@@ -27,10 +27,25 @@ glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
-        ENABLED.forEach((id) => {
-            var value = Math.random() * 255;
-            console.log(`Setting pin ${id} to ${value}`);
-            pi[PIN_MAP[id]] = value;
-        });
+        
+        
+
+        var index = 0;
+
+        setInterval(function() {
+            console.log(index, pi[PIN_MAP]);
+
+            index ++;
+
+            pi[PIN_MAP] = 255;
+        
+            setTimeout(function() {         
+                pi[PIN_MAP] = 0;
+            }, 500);
+
+            if (index >= PIN_MAP.length) {
+                index = 0;
+            }
+        }, 500);
     }
 });
