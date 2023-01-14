@@ -1,6 +1,6 @@
 var glow = require('piglow');
 
-const PIN_MAP = {
+var PIN_MAP = {
     1: 'l_0_0',
     2: 'l_0_1',
     3: 'l_0_2',
@@ -21,14 +21,14 @@ const PIN_MAP = {
     18: 'l_2_5'
 };
 
-const ENABLED = [1,5,10,15];
+var ENABLED = [1,5,10,15];
  
 glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
         ENABLED.forEach((id) => {
-            let value = Math.random() * 255;
+            var value = Math.random() * 255;
             console.log(`Setting pin ${id} to ${value}`);
             pi[PIN_MAP[id]] = value;
         });
