@@ -28,7 +28,9 @@ glow((error, pi) => {
         console.log(error);
     } else {
         ENABLED.forEach((id) => {
-            pi[PIN_MAP[id]] = Math.random() * 100;
+            let value = Math.random() * 255;
+            console.log(`Setting pin ${id} to ${value}`);
+            pi[PIN_MAP[id]] = value;
         });
     }
 });
