@@ -10,6 +10,7 @@ var lookupTable = {
 
 var PINS = [];
 var PIN_MAP = {};
+var interval;
 
 for (var key in  lookupTable) {
     PINS[lookupTable[key]] = key;
@@ -26,7 +27,7 @@ glow((error, pi) => {
     } else {
         var index = 0;
 
-        setInterval(function() {
+        interval = setInterval(function() {
             console.log(index, PINS[index]);
 
             index ++;
@@ -42,4 +43,15 @@ glow((error, pi) => {
             }
         }, 250);
     }
+});
+
+process.on('SIGINT', function() {
+    console.log('Caught interrupt signal');
+    // Turn off all
+
+    clearInterval(interval);
+
+    pi.reset;
+
+    process.exit();
 });
