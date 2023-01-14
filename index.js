@@ -22,7 +22,9 @@ glow((error, pi) => {
     } else {
         let LIGHTS = [
             new Light(pi, PIN_MAP[2]),
-            new Light(pi, PIN_MAP[18]),
+            new Light(pi, PIN_MAP[5]),
+            new Light(pi, PIN_MAP[6]),
+            new Light(pi, PIN_MAP[10]),
             new FaultyFluorescent(pi, PIN_MAP[15])
         ];
         
@@ -87,7 +89,7 @@ class FaultyFluorescent extends Light {
     blink() {
         this.setValue(this.isOn ? 0 : Math.random() * 255);
         this.isOn = !this.isOn;
-        this.timeout = setTimeout(this.blink, 100 + Math.random() * 800);
+        this.timeout = setTimeout(this.blink, 25 + Math.random() * 800);
     }
 
     stop() {
