@@ -24,7 +24,7 @@ glow((error, pi) => {
             new Light(pi, PIN_MAP[2]),
             new Light(pi, PIN_MAP[5]),
             new Light(pi, PIN_MAP[6]),
-            new Light(pi, PIN_MAP[10]),
+            new PlasmaCore(pi, PIN_MAP[10]),
             new FaultyFluorescent(pi, PIN_MAP[15])
         ];
         
@@ -92,6 +92,41 @@ class FaultyFluorescent extends Light {
 
     stop() {
         clearTimeout(this.timeout);
+    }
+
+    destroy() {
+        this.stop();
+        super.destroy();
+    }
+}
+
+class PlasmaCore extends Light {
+    constructor(pi, pinId) {
+        super(pi, pinId);
+
+        this.update = this.update.bind(this);
+
+        this.interval;
+        this.tick = 0;
+
+        this.start();
+    }
+
+    start() {
+        this.interval = setInterval(this.update, 1000/30);
+    }
+
+    update() {
+        this.tick ++;
+
+        let sec = this.tick / 30;
+        let val = 255 * (Math.sin(sec) + 1) * .5;
+        console.log(val);
+        this.setValue(val);
+    }
+
+    stop() {
+        clearInterval(this.interval);
     }
 
     destroy() {
