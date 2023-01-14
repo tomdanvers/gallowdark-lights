@@ -69,7 +69,7 @@ class Light {
 }
 
 class FaultyFluorescent extends Light {
-    constructor(p, pinId) {
+    constructor(pi, pinId) {
         super(pi, pinId);
 
         this.blink = this.blink.bind(this);
