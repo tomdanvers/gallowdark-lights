@@ -24,9 +24,8 @@ glow((error, pi) => {
         let LIGHTS = [
             new Light(pi, PIN_MAP[2]),
             new Light(pi, PIN_MAP[5]),
-            new Light(pi, PIN_MAP[6]),
-            new PlasmaCore(pi, PIN_MAP[10]),
-            new FaultyFluorescent(pi, PIN_MAP[15])
+            new FaultyFluorescent(pi, PIN_MAP[6]),
+            new PlasmaCore(pi, PIN_MAP[10])
         ];
 
         console.log('Light in the Gallowdark.');
