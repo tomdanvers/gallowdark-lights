@@ -1,3 +1,5 @@
+'use strict';
+
 var glow = require('piglow');
 
 var lookupTable = {
