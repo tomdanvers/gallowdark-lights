@@ -53,7 +53,9 @@ process.on('SIGINT', function() {
 
     clearInterval(interval);
 
-    PI.reset;
+    PI.all = 0;
 
-    process.exit();
+    setTimeout(function() {
+        process.exit();
+    }, 250);
 });
