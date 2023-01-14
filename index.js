@@ -10,7 +10,6 @@ var lookupTable = {
 
 var PINS = [];
 var PIN_MAP = {};
-var interval;
 
 for (var key in  lookupTable) {
     PINS[lookupTable[key]] = key;
@@ -21,14 +20,20 @@ glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
-        let light = new Light(pi, PIN_MAP[2]);
+        let LIGHTS = [
+            new Light(pi, PIN_MAP[2]),
+            new Light(pi, PIN_MAP[15]),
+            new FaultyFluorescent(pi, PIN_MAP[15])
+        ];
         
         process.on('SIGINT', function() {
             console.log('Caught interrupt signal');
             // Turn off all
-        
-            clearInterval(interval);
-        
+            
+            LIGHTS.forEach((light) => {
+                light.destroy();
+            });
+            
             pi.all = 0;
         
             setTimeout(function() {
@@ -44,13 +49,8 @@ class Light {
 
         this.pi = pi;
         this.pinId = pinId;
-        console.log(`Light ${this.pinId}`);
         this.value;
-        this.setValue(0);
-        
-        this.int = setInterval(() => {
-            this.random();
-        }, 250);
+        this.setValue(50);
     }
     
     setValue(value) {
@@ -61,5 +61,41 @@ class Light {
     
     random() {
         this.setValue(Math.random() * 255);
+    }
+
+    destroy() {
+        this.setValue(0);
+    }
+}
+
+class FaultyFluorescent extends Light {
+    constructor(p, pinId) {
+        super(pi, pinId);
+
+        this.blink = this.blink.bind(this);
+
+        this.timeout;
+        this.isOn = false;
+
+        this.start();
+    }
+
+    start() {
+        this.blink();
+    }
+
+    blink() {
+        this.setValue(this.isOn ? 0 : Math.random() * 255);
+        this.isOn = !this.isOn;
+        this.timeout = setTimeout(this.blink, 100 + Math.random() * 800);
+    }
+
+    stop() {
+        clearTimeout(this.timeout);
+    }
+
+    destroy() {
+        this.stop();
+        super.destroy();
     }
 }
