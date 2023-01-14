@@ -1,27 +1,33 @@
 var glow = require('piglow');
 
-var PIN_MAP = {
-    1: 'l_0_0',
-    2: 'l_0_1',
-    3: 'l_0_2',
-    4: 'l_0_3',
-    5: 'l_0_4',
-    6: 'l_0_5',
-    7: 'l_1_0',
-    8: 'l_1_1',
-    9: 'l_1_2',
-    10: 'l_1_3',
-    11: 'l_1_4',
-    12: 'l_1_5',
-    13: 'l_2_0',
-    14: 'l_2_1',
-    15: 'l_2_2',
-    16: 'l_2_3',
-    17: 'l_2_4',
-    18: 'l_2_5'
-};
+var PINS = [
+    'l_0_0',
+    'l_0_1',
+    'l_0_2',
+    'l_0_3',
+    'l_0_4',
+    'l_0_5',
+    'l_1_0',
+    'l_1_1',
+    'l_1_2',
+    'l_1_3',
+    'l_1_4',
+    'l_1_5',
+    'l_2_0',
+    'l_2_1',
+    'l_2_2',
+    'l_2_3',
+    'l_2_4',
+    'l_2_5'
+];
 
-var ENABLED = [1,5,10,15];
+var PIN_MAP = {};
+
+for (var i = 0; i < PINS.length; i ++) {
+    PIN_MAP[String(i+1)] = PINS[i];
+}
+
+// var ENABLED = [1,5,10,15];
  
 glow((error, pi) => {
     if (error) {
@@ -33,17 +39,17 @@ glow((error, pi) => {
         var index = 0;
 
         setInterval(function() {
-            console.log(index, pi[PIN_MAP]);
+            console.log(index, PINS[index]);
 
             index ++;
 
-            pi[PIN_MAP] = 255;
+            pi[PINS[index]] = 255;
         
             setTimeout(function() {         
-                pi[PIN_MAP] = 0;
+                pi[PINS[index]] = 0;
             }, 500);
 
-            if (index >= PIN_MAP.length) {
+            if (index >= PINS.length) {
                 index = 0;
             }
         }, 500);
