@@ -120,8 +120,7 @@ class PlasmaCore extends Light {
         this.tick ++;
 
         let sec = this.tick / 30;
-        let val = 255 * (Math.sin(sec) + 1) * .5;
-        console.log(val);
+        let val = 25 + 205 * (Math.sin(sec) + 1) * .5;
         this.setValue(val);
     }
 
