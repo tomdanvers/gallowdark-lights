@@ -108,18 +108,19 @@ class PlasmaCore extends Light {
 
         this.interval;
         this.tick = 0;
+        this.framesPerSecond = 50;
 
         this.start();
     }
 
     start() {
-        this.interval = setInterval(this.update, 1000/30);
+        this.interval = setInterval(this.update, 1000 / this.framesPerSecond);
     }
 
     update() {
         this.tick ++;
 
-        let sec = this.tick / 30;
+        let sec = this.tick / this.framesPerSecond;
         let val = 25 + 205 * (Math.sin(sec) + 1) * .5;
         this.setValue(val);
     }
