@@ -41,21 +41,24 @@ glow((error, pi) => {
 
 class Light {
     constructor(pi, pinId) {
+
         this.pi = pi;
         this.pinId = pinId;
+        console.log(`Light ${this.pinId}`);
         this.value;
         this.setValue(0);
-
+        
         this.int = setInterval(() => {
             this.random();
         }, 250);
     }
-
+    
     setValue(value) {
         this.value = Math.max(0, Math.min(255, value));
         this.pi[this.pinId] = this.value;
+        console.log(`Light ${this.pinId}`);
     }
-
+    
     random() {
         this.setValue(Math.random() * 255);
     }
