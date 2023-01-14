@@ -20,6 +20,7 @@ glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
+        
         let LIGHTS = [
             new Light(pi, PIN_MAP[2]),
             new Light(pi, PIN_MAP[5]),
@@ -27,6 +28,9 @@ glow((error, pi) => {
             new PlasmaCore(pi, PIN_MAP[10]),
             new FaultyFluorescent(pi, PIN_MAP[15])
         ];
+
+        console.log('Light in the Gallowdark.');
+        console.log(LIGHTS)
         
         process.on('SIGINT', function() {
             console.log('Caught interrupt signal');
