@@ -17,7 +17,7 @@ for (var key in  lookupTable) {
 }
 
 console.log(PINS);
-console.log(PINS_MAP);
+console.log(PIN_MAP);
 
  
 glow((error, pi) => {
