@@ -7,7 +7,7 @@ var lookupTable = {
 };
 
 
-
+var PI;
 var PINS = [];
 var PIN_MAP = {};
 var interval;
@@ -25,6 +25,8 @@ glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
+        PI = pi;
+
         var index = 0;
 
         interval = setInterval(function() {
@@ -51,7 +53,7 @@ process.on('SIGINT', function() {
 
     clearInterval(interval);
 
-    pi.reset;
+    PI.reset;
 
     process.exit();
 });
