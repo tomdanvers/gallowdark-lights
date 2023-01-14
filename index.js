@@ -22,7 +22,7 @@ glow((error, pi) => {
     } else {
         let LIGHTS = [
             new Light(pi, PIN_MAP[2]),
-            new Light(pi, PIN_MAP[15]),
+            new Light(pi, PIN_MAP[18]),
             new FaultyFluorescent(pi, PIN_MAP[15])
         ];
         
