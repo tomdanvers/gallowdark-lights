@@ -6,8 +6,6 @@ var lookupTable = {
     l_2_0: 17, l_2_1: 16, l_2_2: 15, l_2_3: 13, l_2_4: 11, l_2_5: 10
 };
 
-
-var PI;
 var PINS = [];
 var PIN_MAP = {};
 var interval;
@@ -16,46 +14,47 @@ for (var key in  lookupTable) {
     PINS[lookupTable[key]] = key;
     PIN_MAP[lookupTable[key] + 1] = key;
 }
-
-console.log(PINS);
-console.log(PIN_MAP);
-
  
 glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
-        PI = pi;
-
-        var index = 0;
-
-        interval = setInterval(function() {
-            console.log(index, PINS[index]);
-
-            index ++;
-
-            pi[PINS[index]] = 255;
+        let light = new Light(pi, PIN_MAP[1]);
         
-            setTimeout(function() {         
-                pi[PINS[index]] = 0;
-            }, 100);
-
-            if (index >= PINS.length) {
-                index = 0;
-            }
-        }, 250);
+        process.on('SIGINT', function() {
+            console.log('Caught interrupt signal');
+            // Turn off all
+        
+            clearInterval(interval);
+        
+            pi.all = 0;
+        
+            setTimeout(function() {
+                process.exit();
+            }, 250);
+        });
     }
 });
 
-process.on('SIGINT', function() {
-    console.log('Caught interrupt signal');
-    // Turn off all
 
-    clearInterval(interval);
+class Light {
+    constructor(pi, pinId) {
+        this.pi = pi;
+        this.pinId = pinId;
+        this.value;
+        this.setValue(0);
 
-    PI.all = 0;
+        this.int = setInterval(() => {
+            this.random();
+        }, 250);
+    }
 
-    setTimeout(function() {
-        process.exit();
-    }, 250);
-});
+    setValue(value) {
+        this.value = Math.max(0, Math.min(255, value));
+        this.pi[this.pinId] = this.value;
+    }
+
+    random() {
+        this.setValue(Math.random() * 255);
+    }
+}
