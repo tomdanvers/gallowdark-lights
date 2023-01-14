@@ -21,7 +21,7 @@ glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
-        let light = new Light(pi, PIN_MAP[1]);
+        let light = new Light(pi, PIN_MAP[2]);
         
         process.on('SIGINT', function() {
             console.log('Caught interrupt signal');
