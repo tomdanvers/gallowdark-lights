@@ -1,6 +1,17 @@
 'use strict';
 
-var glow = require('piglow');
+console.log('========================');
+console.log('Light in the Gallowdark.');
+console.log('========================');
+
+try{
+    var glow = require('piglow');
+} catch(e) {
+    var glow = require('./src/js/piglow-mock');
+}
+
+const LightTypes = require('./src/js/LightTypes');
+const Pin = require('./src/js/Pin');
 
 var lookupTable = {
     l_0_0: 0, l_0_1: 1, l_0_2: 2, l_0_3: 3, l_0_4: 14, l_0_5: 12,
@@ -20,25 +31,32 @@ glow((error, pi) => {
     if (error) {
         console.log(error);
     } else {
-        
-        let LIGHTS = [
-            new Light(pi, PIN_MAP[2]),
-            new Light(pi, PIN_MAP[5]),
-            new FaultyFluorescent(pi, PIN_MAP[6]),
-            new PlasmaCore(pi, PIN_MAP[10])
-        ];
+        // Init pins
+        let pin;
+        let pins = [];
+        let pinMap = {};
+        PINS.forEach((pinId, index) => {
+            pin = new Pin(index, pinId, pi);
+            pins.push(pin);
+            pinMap[String(index + 1)] = pin;
+        });
 
-        console.log('Light in the Gallowdark.');
-        console.log(LIGHTS)
+        pinMap['2'].changeLight(LightTypes.STANDARD);
+        pinMap['5'].changeLight(LightTypes.STANDARD);
+        pinMap['6'].changeLight(LightTypes.FAULTY_FLOURESCENT);
+        pinMap['10'].changeLight(LightTypes.PLASMA_CORE);
         
         process.on('SIGINT', function() {
-            console.log('Caught interrupt signal');
-            
-            LIGHTS.forEach((light) => {
-                light.destroy();
-            });
-            
             pi.all = 0;
+            if (typeof(pi.destroy) === 'function') {
+                pi.destroy();
+            }
+            
+            console.log('Turning off the lights...');
+            
+            pins.forEach((pin) => {
+                pin.destroy();
+            });
         
             setTimeout(function() {
                 process.exit();
@@ -46,97 +64,3 @@ glow((error, pi) => {
         });
     }
 });
-
-
-class Light {
-    constructor(pi, pinId) {
-
-        this.pi = pi;
-        this.pinId = pinId;
-        this.value;
-        this.setValue(50);
-    }
-    
-    setValue(value) {
-        this.value = Math.max(0, Math.min(255, value));
-        this.pi[this.pinId] = this.value;
-    }
-    
-    random() {
-        this.setValue(Math.random() * 255);
-    }
-
-    destroy() {
-        this.setValue(0);
-    }
-}
-
-class FaultyFluorescent extends Light {
-    constructor(pi, pinId) {
-        super(pi, pinId);
-
-        this.blink = this.blink.bind(this);
-
-        this.timeout;
-        this.isOn = false;
-
-        this.start();
-    }
-
-    start() {
-        this.blink();
-    }
-
-    blink() {
-        this.setValue(this.isOn ? 0 : Math.random() * 255);
-        this.isOn = !this.isOn;
-        this.timeout = setTimeout(this.blink, 25 + Math.random() * 800);
-    }
-
-    stop() {
-        clearTimeout(this.timeout);
-    }
-
-    destroy() {
-        this.stop();
-        super.destroy();
-    }
-}
-
-class PlasmaCore extends Light {
-    constructor(pi, pinId) {
-        super(pi, pinId);
-
-        this.update = this.update.bind(this);
-
-        this.interval;
-        this.tick = 0;
-        this.framesPerSecond = 50;
-        this.minValue = 50;
-        this.maxValue = 200;
-
-        this.start();
-    }
-
-    start() {
-        this.interval = setInterval(this.update, 1000 / this.framesPerSecond);
-    }
-
-    update() {
-        this.tick ++;
-
-        let sec = this.tick / this.framesPerSecond;
-        let sinVal = (Math.sin(sec) + 1) * .5;
-        let val = this.minValue + (this.maxValue - this.minValue) * sinVal;
-        this.setValue(val);
-    }
-
-    stop() {
-        clearInterval(this.interval);
-    }
-
-    destroy() {
-        this.stop();
-        super.destroy();
-    }
-}
