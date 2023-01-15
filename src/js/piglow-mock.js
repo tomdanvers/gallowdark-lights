@@ -1,5 +1,7 @@
 'use strict';
 
+const SILENT = false;
+
 const LOOKUP_TABLE = {
     l_0_0: 0, l_0_1: 1, l_0_2: 2, l_0_3: 3, l_0_4: 14, l_0_5: 12,
     l_1_0: 6, l_1_1: 7, l_1_2: 8, l_1_3: 5, l_1_4: 4, l_1_5: 9,
@@ -22,7 +24,7 @@ class PiglowMock {
     }
 
     render() {
-        if (!this.destroyed) {
+        if (!this.destroyed && !SILENT) {
             process.stdout.clearLine(0);
             process.stdout.cursorTo(0);
             let str = '';

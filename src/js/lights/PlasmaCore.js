@@ -1,8 +1,11 @@
+const LightTypes = require('../LightTypes');
 const Light = require('./Light');
 
 class PlasmaCore extends Light {
     constructor(pi, pinId) {
         super(pi, pinId);
+
+        this.type = LightTypes.PLASMA_CORE;
 
         this.update = this.update.bind(this);
 

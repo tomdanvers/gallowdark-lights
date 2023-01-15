@@ -1,0 +1,63 @@
+<h1>Light the Gallowdark</h1>
+<ul class="pins">
+    {{#each pins}}
+    <li id="{{index}}" class="pin{{#if active}} active{{/if}}" data-pin data-pin-index="{{index}}">
+        <h2>Pin {{label}}</h2>
+        <p>Pin with PiGlow id {{id}} ready to light up!</p>
+        <label for="lights">Choose a light:</label>
+        <select name="lights" id="lights" form="lightform" {{#unless active}}disabled{{/unless}} data-light-select>
+            {{#each ../lights}}
+                <option value="{{label}}">{{label}}</option>
+            {{/each}}
+        </select>
+    </li>
+    {{/each}}
+</ul>
+<div class="controls">
+    <button data-update-lights>Update Lights</button>
+</div>
+
+<script>
+    const elButton = document.querySelector('[data-update-lights]');
+    const elPins = Array.from(document.querySelectorAll('[data-pin]'));
+    elButton.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        let data = {
+            pins: []
+        };
+
+        elPins.forEach((elPin) => {
+            if (elPin.classList.contains('active')) {
+                const elSelect = elPin.querySelector('[data-light-select]');
+                data.pins.push({
+                    index: parseInt(elPin.dataset.pinIndex),
+                    type: elSelect.value
+                });
+            }
+        });
+
+        fetch('/update-lights', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        }).then((res) => {
+            return res.json();
+        }).then((data) => {
+            data.forEach((pin) => {
+                let elPin = elPins[pin.index];
+                const elSelect = elPin.querySelector('[data-light-select]');
+                elSelect.value = pin.type;
+            });
+            console.log('Response', data);
+        });
+    });
+</script>

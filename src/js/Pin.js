@@ -11,13 +11,22 @@ class Pin {
         this.id = id;
         this.label = String(index + 1);
         this.pi = pi;
-
+        
+        this.active = false;
         this.light = false;
+    }
+
+    setActive(active) {
+        this.active = active;
     }
 
     changeLight(type) {
         if (this.light) {
-            this.light.destroy();
+            if (type === this.light.type) {
+                return;
+            } else {
+                this.light.destroy();
+            }
         }
 
         let LightClass = LIGHT_CLASSES[type];

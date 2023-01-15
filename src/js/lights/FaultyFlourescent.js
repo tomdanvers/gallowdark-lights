@@ -1,8 +1,11 @@
+const LightTypes = require('../LightTypes');
 const Light = require('./Light');
 
 class FaultyFlourescent extends Light {
     constructor(pi, pinId) {
         super(pi, pinId);
+
+        this.type = LightTypes.FAULTY_FLOURESCENT
 
         this.blink = this.blink.bind(this);
 

@@ -1,5 +1,10 @@
+const LightTypes = require("../LightTypes");
+
 class Light {
     constructor(pi, pinId) {
+
+        this.type = LightTypes.STANDARD;
+        
         this.pi = pi;
         this.pinId = pinId;
         this.value;

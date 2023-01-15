@@ -1,0 +1,28 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+
+a {
+  color: #00B7FF; }
+
+li {
+  list-style: none; }
+
+.pin {
+  opacity: .5; }
+  .pin.active {
+    opacity: 1; }
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid black;
+  padding: 20px 40px; }
+
+/*# sourceMappingURL=style.css.map */
