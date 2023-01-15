@@ -49,7 +49,7 @@ class PiglowController {
                 this.pinMap['6'].changeLight(LightTypes.FAULTY_FLOURESCENT);
                 this.pinMap['10'].changeLight(LightTypes.PLASMA_CORE);
                 
-                process.on('SIGINT', function() {
+                process.on('SIGINT', () => {
                     pi.all = 0;
                     if (typeof(pi.destroy) === 'function') {
                         pi.destroy();

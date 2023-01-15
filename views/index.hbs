@@ -52,12 +52,12 @@
         }).then((res) => {
             return res.json();
         }).then((data) => {
+            // Use respons data to ensure front end select boxes are up to date
             data.forEach((pin) => {
                 let elPin = elPins[pin.index];
                 const elSelect = elPin.querySelector('[data-light-select]');
                 elSelect.value = pin.type;
             });
-            console.log('Response', data);
         });
     });
 </script>
