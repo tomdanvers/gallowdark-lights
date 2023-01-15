@@ -1,17 +1,32 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
 
 a {
-  color: #00B7FF; }
+  color: #00B7FF;
+}
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
 
 li {
-  list-style: none; }
+  list-style: none;
+}
 
-.pin {
-  opacity: .5; }
-  .pin.active {
-    opacity: 1; }
+.pin{ 
+  opacity: .5; 
+}
+
+.pin.active {
+  opacity: 1;
+}
 
 .controls {
   display: flex;
@@ -23,6 +38,5 @@ li {
   right: 0;
   background: white;
   border-top: 1px solid black;
-  padding: 20px 40px; }
-
-/*# sourceMappingURL=style.css.map */
+  padding: 20px 40px;
+}
