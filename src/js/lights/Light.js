@@ -1,3 +1,5 @@
+'use strict';
+
 const LightTypes = require("../LightTypes");
 
 class Light {
