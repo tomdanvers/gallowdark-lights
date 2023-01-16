@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  padding: 30px 0 50px 0;
   font-size: 14px;
   font-family: 'PT Serif', serif;
 }
@@ -12,12 +12,26 @@ h1, h2, h3, h4, h5 {
   font-family: 'Russo One', sans-serif;
 }
 
+h1 {
+  text-transform: uppercase;
+}
+
 ul {
   padding-inline-start: 0;
 }
 
 li {
   list-style: none;
+}
+
+.container {
+  padding: 0 30px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.headline {
+  text-align: center;
 }
 
 .pins {

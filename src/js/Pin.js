@@ -12,7 +12,8 @@ class Pin {
     constructor(index, id, pi) {
         this.index = index;
         this.id = id;
-        this.label = String(index + 1);
+        this.number = index + 1;
+        this.label = String(this.number);
         this.pi = pi;
         
         this.active = false;

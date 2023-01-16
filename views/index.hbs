@@ -1,22 +1,24 @@
-<h1>Light the Gallowdark</h1>
-<ul class="pins">
-    {{#each pins}}
-    <li id="{{index}}" class="pin{{#if active}} active{{/if}}" data-pin data-pin-index="{{index}}">
-        <h2>Pin {{label}}</h2>
-        <p>Pin with PiGlow id {{id}} ready to light up!</p>
-        <label for="lights">Choose a light:</label>
-        <select name="lights" id="lights" form="lightform" {{#unless active}}disabled{{/unless}} data-light-select>
-            {{#each ../lights}}
-                <option value="{{label}}" {{#ifEquals label ../light.type}}selected="selected"{{/ifEquals}}>{{label}}</option>
-            {{/each}}
-        </select>
-    </li>
-    {{/each}}
-</ul>
-<div class="controls">
-    <input data-global-max type="range" id="globalMax" name="globalMax" min="0" max="1" value="{{globalMax}}" step=".05">
-    <button data-update-lights>Update Lights</button>
-    <button data-shutdown>Shutdown!</button>
+<div class="container">
+    <h1 class="headline">Light the Gallowdark</h1>
+    <ul class="pins">
+        {{#each pins}}
+        <li id="{{index}}" class="pin{{#if active}} active{{/if}}" data-pin data-pin-index="{{index}}">
+            <h2>{{label}}</h2>
+            <p>Pin #{{number}} ready to light up!</p>
+            <label for="lights">Choose a light:</label>
+            <select name="lights" id="lights" form="lightform" {{#unless active}}disabled{{/unless}} data-light-select>
+                {{#each ../lights}}
+                    <option value="{{label}}" {{#ifEquals label ../light.type}}selected="selected"{{/ifEquals}}>{{label}}</option>
+                {{/each}}
+            </select>
+        </li>
+        {{/each}}
+    </ul>
+    <div class="controls">
+        <input data-global-max type="range" id="globalMax" name="globalMax" min="0" max="1" value="{{globalMax}}" step=".05">
+        <button data-update-lights>Update Lights</button>
+        <button data-shutdown>Shutdown!</button>
+    </div>
 </div>
 
 <script>
