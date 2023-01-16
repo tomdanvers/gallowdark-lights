@@ -3,7 +3,6 @@
 try{
     var glow = require('piglow');
 } catch(e) {
-    console.log(e);
     var glow = require('./piglow-mock');
 }
 
