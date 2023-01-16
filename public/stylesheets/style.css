@@ -24,12 +24,18 @@ li {
   list-style: none;
 }
 
+.pins {
+  padding-bottom: 80px;
+}
+
 .pin{ 
-  opacity: .5; 
+  display: none; 
+  border-bottom: 1px solid grey;
+  padding: 10px 0 30px;
 }
 
 .pin.active {
-  opacity: 1;
+  display: block; 
 }
 
 .controls {
