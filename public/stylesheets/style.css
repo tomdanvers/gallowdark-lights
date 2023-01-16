@@ -34,6 +34,7 @@ li {
 
 .controls {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -42,5 +43,9 @@ li {
   right: 0;
   background: white;
   border-top: 1px solid black;
-  padding: 20px 40px;
+  padding: 15px 40px;
+}
+
+.controls button {
+  margin: 5px;
 }
