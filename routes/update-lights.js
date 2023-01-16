@@ -6,6 +6,7 @@ var PiglowController = require('../src/js/PiglowController');
 /* POST light data. */
 router.post('/', function(req, res) {
   const data = req.body;
+  PiglowController.updateGlobalMax(data.globalMax);
   PiglowController.updatePins(data.pins);
   res.send(PiglowController.pinsToJSON());
 });

@@ -6,6 +6,7 @@ const LIGHT_CLASSES = {};
 LIGHT_CLASSES[LightTypes.STANDARD] = require('./lights/Light');
 LIGHT_CLASSES[LightTypes.PLASMA_CORE] = require('./lights/PlasmaCore');
 LIGHT_CLASSES[LightTypes.FAULTY_FLOURESCENT] = require('./lights/FaultyFlourescent');
+LIGHT_CLASSES[LightTypes.STEADY_BLINK] = require('./lights/SteadyBlink');
 
 class Pin {
     constructor(index, id, pi) {

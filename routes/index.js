@@ -14,7 +14,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { 
     title: 'Light the Gallowdark',
     pins: PiglowController.pins,
-    lights: LightTypesList
+    lights: LightTypesList,
+    globalMax: PiglowController.globalMax
    });
 });
 

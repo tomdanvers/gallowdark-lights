@@ -17,6 +17,13 @@ class PiglowController {
             l_1_0: 6, l_1_1: 7, l_1_2: 8, l_1_3: 5, l_1_4: 4, l_1_5: 9,
             l_2_0: 17, l_2_1: 16, l_2_2: 15, l_2_3: 13, l_2_4: 11, l_2_5: 10
         };
+
+        var pinLabels = {
+            2: 'Lorem',
+            5: 'Ipsum',
+            6: 'Dolor',
+            10: 'Sit'
+        };
         
         var PINS = [];
         this.pins = [];
@@ -28,6 +35,8 @@ class PiglowController {
             PINS[lookupTable[key]] = key;
             PIN_MAP[lookupTable[key] + 1] = key;
         }
+
+        this.globalMax = 1;
          
         glow((error, pi) => {
             if (error) {
@@ -37,6 +46,9 @@ class PiglowController {
                 let pin;
                 PINS.forEach((pinId, index) => {
                     pin = new Pin(index, pinId, pi);
+                    if (pinLabels[index + 1]) {
+                        pin.label = pinLabels[index + 1];
+                    }
                     this.pins.push(pin);
                     this.pinMap[String(index + 1)] = pin;
                 });
@@ -45,13 +57,13 @@ class PiglowController {
                 this.pinMap['5'].setActive(true);
                 this.pinMap['6'].setActive(true);
                 this.pinMap['10'].setActive(true);
-                this.pinMap['15'].setActive(true);
+                // this.pinMap['15'].setActive(true);
         
-                this.pinMap['2'].changeLight(LightTypes.STANDARD);
+                this.pinMap['2'].changeLight(LightTypes.STEADY_BLINK);
                 this.pinMap['5'].changeLight(LightTypes.STANDARD);
                 this.pinMap['6'].changeLight(LightTypes.FAULTY_FLOURESCENT);
                 this.pinMap['10'].changeLight(LightTypes.PLASMA_CORE);
-                this.pinMap['15'].changeLight(LightTypes.STANDARD);
+                // this.pinMap['15'].changeLight(LightTypes.STANDARD);
                 
                 process.on('SIGINT', () => {
                     pi.all = 0;
@@ -73,9 +85,19 @@ class PiglowController {
         });
     }
 
+    updateGlobalMax(value) {
+        if (this.globalMax !== value) {
+            this.globalMax = value;
+            this.pins.forEach((pin) => {
+                if (pin.active) {
+                    pin.light.setGlobalMax(this.globalMax > .1 ? this.globalMax : 0);
+                }
+            });
+        }
+    }
+
     updatePins(pins) {
         pins.forEach((pin) => {
-            console.log(pin.index)
             if (this.pins[pin.index]) {
                 this.pins[pin.index].changeLight(pin.type);
             }
