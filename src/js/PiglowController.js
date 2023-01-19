@@ -22,7 +22,8 @@ class PiglowController {
             2: 'Lorem',
             5: 'Ipsum',
             6: 'Dolor',
-            10: 'Sit'
+            10: 'Sit',
+            15: 'Fan shaft'
         };
         
         var PINS = [];
@@ -57,13 +58,13 @@ class PiglowController {
                 this.pinMap['5'].setActive(true);
                 this.pinMap['6'].setActive(true);
                 this.pinMap['10'].setActive(true);
-                // this.pinMap['15'].setActive(true);
+                this.pinMap['15'].setActive(true);
         
                 this.pinMap['2'].changeLight(LightTypes.STANDARD);
                 this.pinMap['5'].changeLight(LightTypes.STANDARD);
                 this.pinMap['6'].changeLight(LightTypes.STANDARD);
                 this.pinMap['10'].changeLight(LightTypes.STANDARD);
-                // this.pinMap['15'].changeLight(LightTypes.STANDARD);
+                this.pinMap['15'].changeLight(LightTypes.STANDARD);
                 
                 process.on('SIGINT', () => {
                     pi.all = 0;
