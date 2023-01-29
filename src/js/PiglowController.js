@@ -133,7 +133,7 @@ class PiglowController {
         this.pins = [];
         this.pinMap = {};
 
-        this.globalMax = 1;
+        this.globalMax = 0;
          
         glow((error, pi) => {
             if (error) {
@@ -164,26 +164,62 @@ class PiglowController {
                 this.pinMap['15'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['16'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['17'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['18'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['18'].changeLight(LightTypes.STANDARD, this.globalM1);
+
+                this.fadeIn();
                 
                 process.on('SIGINT', () => {
-                    pi.all = 0;
-                    if (typeof(pi.destroy) === 'function') {
-                        pi.destroy();
-                    }
+                    this.fadeOut(() => {
+                        pi.all = 0;
+                        if (typeof(pi.destroy) === 'function') {
+                            pi.destroy();
+                        }
+                        
+                        console.log('Turning off the lights...');
+                        
+                        this.pins.forEach((pin) => {
+                            pin.destroy();
+                        });
                     
-                    console.log('Turning off the lights...');
-                    
-                    this.pins.forEach((pin) => {
-                        pin.destroy();
+                        setTimeout(function() {
+                            process.exit();
+                        }, 250);
                     });
-                
-                    setTimeout(function() {
-                        process.exit();
-                    }, 250);
                 });
             }
         });
+    }
+
+    fadeIn(cb) {
+        this.fade(0.0075, cb);
+    }
+
+    fadeOut(cb) {
+        this.fade(-0.02, cb);
+    }
+
+    fade(increment, cb) {
+        clearInterval(this.fadeInterval);
+        this.fadeInterval = setInterval(() => {
+            let newGlobalMax;
+            if (increment > 0) {
+                newGlobalMax = Math.min(1, this.globalMax + increment);
+            } else if (increment < 0) {
+                newGlobalMax = Math.max(0, this.globalMax + increment);
+            }
+            this.updateGlobalMax(newGlobalMax);
+            if (increment > 0 && newGlobalMax === 1) {
+                clearInterval(this.fadeInterval);
+                if (cb) {
+                    cb();
+                }
+            } else if (increment < 0 && newGlobalMax === 0) {
+                clearInterval(this.fadeInterval);
+                if (cb) {
+                    cb();
+                }
+            }
+        }, 1000 / 30);
     }
 
     updateGlobalMax(value) {
