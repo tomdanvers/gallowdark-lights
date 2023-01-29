@@ -3,7 +3,7 @@
 const LightTypes = require('../LightTypes');
 const Light = require('./Light');
 
-class FaultyFlourescent extends Light {
+class Fire extends Light {
     constructor(pi, pin, globalMax) {
         super(pi, pin, globalMax);
 
@@ -22,9 +22,9 @@ class FaultyFlourescent extends Light {
     }
 
     blink() {
-        this.setValue(this.isOn ? 0 : Math.random() * 255 * this.pin.max);
+        this.setValue(this.isOn ? 20 + Math.random() * 30 : Math.random() * 255 * this.pin.max);
         this.isOn = !this.isOn;
-        this.timeout = setTimeout(this.blink, 25 + Math.random() * 800);
+        this.timeout = setTimeout(this.blink, 80 + Math.random() * 200);
     }
 
     stop() {
@@ -37,4 +37,4 @@ class FaultyFlourescent extends Light {
     }
 }
 
-module.exports = FaultyFlourescent;
+module.exports = Fire;

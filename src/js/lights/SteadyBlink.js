@@ -4,8 +4,8 @@ const LightTypes = require('../LightTypes');
 const Light = require('./Light');
 
 class SteadyBlink extends Light {
-    constructor(pi, pinId) {
-        super(pi, pinId);
+    constructor(pi, pin, globalMax) {
+        super(pi, pin, globalMax);
 
         this.type = LightTypes.STEADY_BLINK;
 
@@ -13,7 +13,7 @@ class SteadyBlink extends Light {
 
         this.interval;
         this.isOn = false;
-        this.maxValue = 200;
+        this.maxValue = Math.min(pin.max * 255, 200);
 
         this.start();
     }
@@ -24,7 +24,6 @@ class SteadyBlink extends Light {
 
     update() {
         this.isOn = !this.isOn;
-        console.log(this.isOn)
         this.setValue(this.isOn ? this.maxValue : 0);
     }
 

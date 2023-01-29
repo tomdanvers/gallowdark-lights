@@ -4,14 +4,14 @@ const PiglowController = require('../PiglowController.js');
 const LightTypes = require('../LightTypes');
 
 class Light {
-    constructor(pi, pinId) {
+    constructor(pi, pin, globalMax) {
 
         this.type = LightTypes.STANDARD;
         
         this.pi = pi;
-        this.pinId = pinId;
+        this.pin = pin;
+        this.globalMax = globalMax;
         this.value = 0;
-        this.globalMax = 1;
         this.setValue(50);
     }
 
@@ -26,7 +26,7 @@ class Light {
     }
     
     updateVal() {
-        this.pi[this.pinId] = Math.floor(this.value * this.globalMax);
+        this.pi[this.pin.pinId] = Math.min(this.pin.max * 255, Math.floor(this.value * this.globalMax));
     }
     
     random() {
@@ -35,6 +35,7 @@ class Light {
 
     destroy() {
         this.setValue(0);
+        this.pin = null;
     }
 }
 

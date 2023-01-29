@@ -8,16 +8,19 @@ LIGHT_CLASSES[LightTypes.BRIGHT] = require('./lights/LightBright');
 LIGHT_CLASSES[LightTypes.PLASMA_CORE] = require('./lights/PlasmaCore');
 LIGHT_CLASSES[LightTypes.FAULTY_FLOURESCENT] = require('./lights/FaultyFlourescent');
 LIGHT_CLASSES[LightTypes.STEADY_BLINK] = require('./lights/SteadyBlink');
+LIGHT_CLASSES[LightTypes.FIRE] = require('./lights/Fire');
 
 class Pin {
-    constructor(index, id, pi) {
+    constructor(index, config, pi) {
         this.index = index;
-        this.id = id;
+        this.id = config.id;
+        this.pinId = config.pinId;
         this.number = index + 1;
-        this.label = String(this.number);
+        this.label = config.label;
+        this.max = config.max;
         this.pi = pi;
         
-        this.active = false;
+        this.active = true;
         this.light = false;
     }
 
@@ -25,7 +28,7 @@ class Pin {
         this.active = active;
     }
 
-    changeLight(type) {
+    changeLight(type, globalMax) {
         if (this.light) {
             if (type === this.light.type) {
                 return;
@@ -36,7 +39,7 @@ class Pin {
 
         let LightClass = LIGHT_CLASSES[type];
         if (LightClass) {
-            this.light = new LightClass(this.pi, this.id);
+            this.light = new LightClass(this.pi, this, globalMax);
         }
     }
     

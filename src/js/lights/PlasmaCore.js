@@ -4,8 +4,8 @@ const LightTypes = require('../LightTypes');
 const Light = require('./Light');
 
 class PlasmaCore extends Light {
-    constructor(pi, pinId) {
-        super(pi, pinId);
+    constructor(pi, pin, globalMax) {
+        super(pi, pin, globalMax);
 
         this.type = LightTypes.PLASMA_CORE;
 
@@ -15,7 +15,7 @@ class PlasmaCore extends Light {
         this.tick = 0;
         this.framesPerSecond = 50;
         this.minValue = 50;
-        this.maxValue = 200;
+        this.maxValue = Math.min(pin.max * 255, 240);
 
         this.start();
     }

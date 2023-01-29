@@ -8,34 +8,130 @@ try{
 
 const LightTypes = require('./LightTypes');
 const Pin = require('./Pin');
+const DEFAULT_BRIGHTNESS = 150;
 
 class PiglowController {
     constructor() {
         
-        var lookupTable = {
-            l_0_0: 0, l_0_1: 1, l_0_2: 2, l_0_3: 3, l_0_4: 14, l_0_5: 12,
-            l_1_0: 6, l_1_1: 7, l_1_2: 8, l_1_3: 5, l_1_4: 4, l_1_5: 9,
-            l_2_0: 17, l_2_1: 16, l_2_2: 15, l_2_3: 13, l_2_4: 11, l_2_5: 10
-        };
+        // var lookupTable = {
+        //     l_0_0: 0, l_0_1: 1, l_0_2: 2, l_0_3: 3, l_0_4: 14, l_0_5: 12,
+        //     l_1_0: 6, l_1_1: 7, l_1_2: 8, l_1_3: 5, l_1_4: 4, l_1_5: 9,
+        //     l_2_0: 17, l_2_1: 16, l_2_2: 15, l_2_3: 13, l_2_4: 11, l_2_5: 10
+        // };
 
-        var pinLabels = {
-            2: 'Lorem',
-            5: 'Ipsum',
-            6: 'Dolor',
-            10: 'Sit',
-            15: 'Fan shaft'
-        };
-        
-        var PINS = [];
+        const pinConfig = [
+            {
+                id: 1,
+                pinId: 'l_0_0',
+                label: 'Lorem ipsum 1',
+                max: 1
+            },
+            {
+                id: 2,
+                pinId: 'l_0_1',
+                label: 'Lorem ipsum 2',
+                max: .8
+            },
+            {
+                id: 3,
+                pinId: 'l_0_2',
+                label: 'Lorem ipsum 3',
+                max: 1
+            },
+            {
+                id: 4,
+                pinId: 'l_0_3',
+                label: 'Lorem ipsum 4',
+                max: 1
+            },
+            {
+                id: 5,
+                pinId: 'l_1_4',
+                label: 'Lorem ipsum 5',
+                max: 1
+            },
+            {
+                id: 6,
+                pinId: 'l_1_3',
+                label: 'Lorem ipsum 6',
+                max: 1
+            },
+            {
+                id: 7,
+                pinId: 'l_1_0',
+                label: 'Lorem ipsum 7',
+                max: 1
+            },
+            {
+                id: 8,
+                pinId: 'l_1_1',
+                label: 'Lorem ipsum 8',
+                max: 1
+            },
+            {
+                id: 9,
+                pinId: 'l_1_2',
+                label: 'Lorem ipsum 9',
+                max: 1
+            },
+            {
+                id: 10,
+                pinId: 'l_1_5',
+                label: 'Lorem ipsum 10',
+                max: 1
+            },
+            {
+                id: 11,
+                pinId: 'l_2_5',
+                label: 'Lorem ipsum 11',
+                max: 1
+            },
+            {
+                id: 12,
+                pinId: 'l_2_4',
+                label: 'Lorem ipsum 12',
+                max: 1
+            },
+            {
+                id: 13,
+                pinId: 'l_0_5',
+                label: 'Lorem ipsum 13',
+                max: 1
+            },
+            {
+                id: 14,
+                pinId: 'l_2_3',
+                label: 'Lorem ipsum 14',
+                max: 1
+            },
+            {
+                id: 15,
+                pinId: 'l_0_4',
+                label: 'Lorem ipsum 15',
+                max: 1
+            },
+            {
+                id: 16,
+                pinId: 'l_2_2',
+                label: 'Lorem ipsum 16',
+                max: 1
+            },
+            {
+                id: 17,
+                pinId: 'l_2_1',
+                label: 'Lorem ipsum 17',
+                max: 1
+            },
+            {
+                id: 18,
+                pinId: 'l_2_0',
+                label: 'Lorem ipsum 18',
+                max: 1
+            }
+        ];
+
         this.pins = [];
-
-        var PIN_MAP = {};
         this.pinMap = {};
-        
-        for (var key in  lookupTable) {
-            PINS[lookupTable[key]] = key;
-            PIN_MAP[lookupTable[key] + 1] = key;
-        }
 
         this.globalMax = 1;
          
@@ -45,26 +141,30 @@ class PiglowController {
             } else {
                 // Init pins
                 let pin;
-                PINS.forEach((pinId, index) => {
-                    pin = new Pin(index, pinId, pi);
-                    if (pinLabels[index + 1]) {
-                        pin.label = pinLabels[index + 1];
-                    }
+                pinConfig.forEach((config, index) => {
+                    pin = new Pin(index, config, pi);
                     this.pins.push(pin);
-                    this.pinMap[String(index + 1)] = pin;
+                    this.pinMap[String(pin.number)] = pin;
                 });
 
-                this.pinMap['2'].setActive(true);
-                this.pinMap['5'].setActive(true);
-                this.pinMap['6'].setActive(true);
-                this.pinMap['10'].setActive(true);
-                this.pinMap['15'].setActive(true);
-        
-                this.pinMap['2'].changeLight(LightTypes.STANDARD);
-                this.pinMap['5'].changeLight(LightTypes.STANDARD);
-                this.pinMap['6'].changeLight(LightTypes.STANDARD);
-                this.pinMap['10'].changeLight(LightTypes.STANDARD);
-                this.pinMap['15'].changeLight(LightTypes.STANDARD);
+                this.pinMap['1'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['2'].changeLight(LightTypes.BRIGHT, this.globalMax);
+                this.pinMap['3'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
+                this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+                this.pinMap['5'].changeLight(LightTypes.STEADY_BLINK, this.globalMax);
+                this.pinMap['6'].changeLight(LightTypes.FIRE, this.globalMax);
+                this.pinMap['7'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['8'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['9'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['10'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['11'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['12'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['13'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['14'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['15'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['16'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['17'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['18'].changeLight(LightTypes.STANDARD, this.globalMax);
                 
                 process.on('SIGINT', () => {
                     pi.all = 0;
@@ -100,7 +200,7 @@ class PiglowController {
     updatePins(pins) {
         pins.forEach((pin) => {
             if (this.pins[pin.index]) {
-                this.pins[pin.index].changeLight(pin.type);
+                this.pins[pin.index].changeLight(pin.type, this.globalMax);
             }
         });
     }
