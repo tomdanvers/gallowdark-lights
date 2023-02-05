@@ -15,6 +15,7 @@ class Pin {
         this.index = index;
         this.id = config.id;
         this.pinId = config.pinId;
+        this.group = config.group;
         this.number = index + 1;
         this.label = config.label;
         this.max = config.max;

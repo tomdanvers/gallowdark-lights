@@ -12,7 +12,7 @@ class Light {
         this.pin = pin;
         this.globalMax = globalMax;
         this.value = 0;
-        this.setValue(50);
+        this.setValue(100);
     }
 
     setGlobalMax(value) {

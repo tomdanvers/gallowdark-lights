@@ -13,7 +13,7 @@ var PiglowController = require('../src/js/PiglowController');
 router.get('/', function(req, res, next) {
   res.render('index', { 
     title: 'Light the Gallowdark',
-    pins: PiglowController.pins,
+    pinGroups: PiglowController.pinGroups,
     lights: LightTypesList,
     globalMax: PiglowController.globalMax
    });

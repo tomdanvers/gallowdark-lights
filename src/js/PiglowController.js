@@ -10,6 +10,12 @@ const LightTypes = require('./LightTypes');
 const Pin = require('./Pin');
 const DEFAULT_BRIGHTNESS = 150;
 
+const GROUPS = {
+    FEATURE: 'group-feature',
+    UPLIGHT: 'group-uplight',
+    FLEXIBLE: 'group-flexible'
+};
+
 class PiglowController {
     constructor() {
         
@@ -23,115 +29,151 @@ class PiglowController {
             {
                 id: 1,
                 pinId: 'l_0_0',
-                label: 'Lorem ipsum 1',
-                max: 1
+                label: 'Fan Shaft',
+                max: 1,
+                group: GROUPS.FEATURE
             },
             {
                 id: 2,
                 pinId: 'l_0_1',
-                label: 'Lorem ipsum 2',
-                max: .8
+                label: 'E4 - Top Left',
+                max: 1,
+                group: GROUPS.FLEXIBLE
             },
             {
                 id: 3,
                 pinId: 'l_0_2',
-                label: 'Lorem ipsum 3',
-                max: 1
+                label: 'C2',
+                max: 1,
+                group: GROUPS.UPLIGHT
             },
             {
                 id: 4,
                 pinId: 'l_0_3',
-                label: 'Lorem ipsum 4',
-                max: 1
+                label: 'The Lurker Between Decks',
+                max: 1,
+                group: GROUPS.FEATURE
             },
             {
                 id: 5,
                 pinId: 'l_1_4',
-                label: 'Lorem ipsum 5',
-                max: 1
+                label: 'Access Hatch',
+                max: 1,
+                group: GROUPS.FEATURE
             },
             {
                 id: 6,
                 pinId: 'l_1_3',
-                label: 'Lorem ipsum 6',
-                max: 1
+                label: 'C1',
+                max: 1,
+                group: GROUPS.FLEXIBLE
             },
             {
                 id: 7,
                 pinId: 'l_1_0',
-                label: 'Lorem ipsum 7',
-                max: 1
+                label: 'E7',
+                max: 1,
+                group: GROUPS.UPLIGHT
             },
             {
                 id: 8,
                 pinId: 'l_1_1',
-                label: 'Lorem ipsum 8',
-                max: 1
+                label: 'Power Conduits',
+                max: 1,
+                group: GROUPS.FEATURE
             },
             {
                 id: 9,
                 pinId: 'l_1_2',
-                label: 'Lorem ipsum 9',
-                max: 1
+                label: 'B6 - Circle Pit',
+                max: 1,
+                group: GROUPS.FLEXIBLE
             },
             {
                 id: 10,
                 pinId: 'l_1_5',
-                label: 'Lorem ipsum 10',
-                max: 1
+                label: 'B3',
+                max: 1,
+                group: GROUPS.UPLIGHT
             },
             {
                 id: 11,
                 pinId: 'l_2_5',
-                label: 'Lorem ipsum 11',
-                max: 1
+                label: 'C4',
+                max: 1,
+                group: GROUPS.UPLIGHT
             },
             {
                 id: 12,
                 pinId: 'l_2_4',
-                label: 'Lorem ipsum 12',
-                max: 1
+                label: 'D5',
+                max: 1,
+                group: GROUPS.UPLIGHT
             },
             {
                 id: 13,
                 pinId: 'l_0_5',
-                label: 'Lorem ipsum 13',
-                max: 1
+                label: 'Cargo Lift - Open',
+                max: 1,
+                group: GROUPS.FEATURE
             },
             {
                 id: 14,
                 pinId: 'l_2_3',
-                label: 'Lorem ipsum 14',
+                label: 'Inactive',
                 max: 1
             },
             {
                 id: 15,
                 pinId: 'l_0_4',
-                label: 'Lorem ipsum 15',
-                max: 1
+                label: 'E4 - Bottom Right',
+                max: 1,
+                group: GROUPS.FLEXIBLE
             },
             {
                 id: 16,
                 pinId: 'l_2_2',
-                label: 'Lorem ipsum 16',
-                max: 1
+                label: 'The Sump',
+                max: 1,
+                group: GROUPS.FEATURE
             },
             {
                 id: 17,
                 pinId: 'l_2_1',
-                label: 'Lorem ipsum 17',
-                max: 1
+                label: 'E5',
+                max: 1,
+                group: GROUPS.FLEXIBLE
             },
             {
                 id: 18,
                 pinId: 'l_2_0',
-                label: 'Lorem ipsum 18',
-                max: 1
+                label: 'Cargo Lift - Closed',
+                max: 1,
+                group: GROUPS.FEATURE
             }
         ];
 
         this.pins = [];
         this.pinMap = {};
+
+        this.pinGroups = [
+            {
+                id: GROUPS.FLEXIBLE,
+                label: 'Flexible',
+                pins: []
+            },
+            {
+                id: GROUPS.UPLIGHT,
+                label: 'Uplights',
+                pins: []
+            },
+            {
+                id: GROUPS.FEATURE,
+                label: 'Features',
+                pins: []
+            }
+        ];
+        this.pinGroupsMap = {};
 
         this.globalMax = 0;
          
@@ -139,32 +181,41 @@ class PiglowController {
             if (error) {
                 console.log(error);
             } else {
+                // Init groups
+                this.pinGroups.forEach((pinGroup) => {
+                    this.pinGroupsMap[pinGroup.id] = pinGroup;
+                });
+
                 // Init pins
                 let pin;
                 pinConfig.forEach((config, index) => {
                     pin = new Pin(index, config, pi);
                     this.pins.push(pin);
                     this.pinMap[String(pin.number)] = pin;
+
+                    if (this.pinGroupsMap[pin.group]) {
+                        this.pinGroupsMap[pin.group].pins.push(pin);
+                    }
                 });
 
-                this.pinMap['1'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['2'].changeLight(LightTypes.BRIGHT, this.globalMax);
-                this.pinMap['3'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
+                this.pinMap['1'].changeLight(LightTypes.BRIGHT, this.globalMax);
+                this.pinMap['2'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['3'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
                 this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
-                this.pinMap['5'].changeLight(LightTypes.STEADY_BLINK, this.globalMax);
-                this.pinMap['6'].changeLight(LightTypes.FIRE, this.globalMax);
+                this.pinMap['5'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+                this.pinMap['6'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['7'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['8'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['8'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
                 this.pinMap['9'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['10'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['11'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['12'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['13'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['14'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['13'].changeLight(LightTypes.STEADY_BLINK, this.globalMax);
+                this.pinMap['14'].setActive(false);
                 this.pinMap['15'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['16'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['16'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
                 this.pinMap['17'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['18'].changeLight(LightTypes.STANDARD, this.globalM1);
+                this.pinMap['18'].changeLight(LightTypes.BRIGHT, this.globalMax);
 
                 this.fadeIn();
                 

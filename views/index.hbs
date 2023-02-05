@@ -1,17 +1,20 @@
 <div class="container">
     <h1 class="headline">Light the Gallowdark</h1>
     <ul class="pins">
-        {{#each pins}}
-        <li id="{{index}}" class="pin{{#if active}} active{{/if}}" data-pin data-pin-index="{{index}}">
-            <h2>{{label}}</h2>
-            <p>Pin #{{number}} ready to light up!</p>
-            <label for="lights">Choose a light:</label>
-            <select name="lights" id="lights" form="lightform" {{#unless active}}disabled{{/unless}} data-light-select>
-                {{#each ../lights}}
-                    <option value="{{label}}" {{#ifEquals label ../light.type}}selected="selected"{{/ifEquals}}>{{label}}</option>
-                {{/each}}
-            </select>
-        </li>
+        {{#each pinGroups}}
+            <h1>{{label}}</h1>
+            {{#each pins}}
+            <li id="{{index}}" class="pin{{#if active}} active{{/if}}" data-pin data-pin-index="{{index}}">
+                <h2>{{label}}</h2>
+                <p>Pin #{{number}} ready to light up!</p>
+                <label for="lights">Choose a light:</label>
+                <select name="lights" id="lights" form="lightform" {{#unless active}}disabled{{/unless}} data-light-select>
+                    {{#each ../../lights}}
+                        <option value="{{label}}" {{#ifEquals label ../light.type}}selected="selected"{{/ifEquals}}>{{label}}</option>
+                    {{/each}}
+                </select>
+            </li>
+            {{/each}}
         {{/each}}
     </ul>
     <div class="controls">
@@ -43,7 +46,7 @@
                 });
             }
         });
-
+        
         fetch('/update-lights', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -59,9 +62,9 @@
         }).then((res) => {
             return res.json();
         }).then((data) => {
-            // Use respons data to ensure front end select boxes are up to date
+            // Use response data to ensure front end select boxes are up to date
             data.forEach((pin) => {
-                let elPin = elPins[pin.index];
+                let elPin = document.querySelector(`[data-pin-index='${pin.index}']`);
                 const elSelect = elPin.querySelector('[data-light-select]');
                 elSelect.value = pin.type;
             });
