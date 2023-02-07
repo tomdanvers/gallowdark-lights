@@ -134,7 +134,7 @@ class PiglowController {
                 id: 16,
                 pinId: 'l_2_2',
                 label: 'The Sump',
-                max: 1,
+                max: .75,
                 group: GROUPS.FEATURE
             },
             {
@@ -200,13 +200,13 @@ class PiglowController {
 
                 this.pinMap['1'].changeLight(LightTypes.BRIGHT, this.globalMax);
                 this.pinMap['2'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['3'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+                this.pinMap['3'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
                 this.pinMap['5'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
                 this.pinMap['6'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['7'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['8'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
-                this.pinMap['9'].changeLight(LightTypes.STANDARD, this.globalMax);
+                this.pinMap['9'].changeLight(LightTypes.BRIGHT, this.globalMax);
                 this.pinMap['10'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['11'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['12'].changeLight(LightTypes.STANDARD, this.globalMax);

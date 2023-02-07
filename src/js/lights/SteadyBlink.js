@@ -13,7 +13,7 @@ class SteadyBlink extends Light {
 
         this.interval;
         this.isOn = false;
-        this.maxValue = Math.min(pin.max * 255, 200);
+        this.maxValue = Math.min(pin.max * 255, 190);
 
         this.start();
     }

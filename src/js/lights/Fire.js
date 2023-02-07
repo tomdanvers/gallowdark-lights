@@ -22,9 +22,9 @@ class Fire extends Light {
     }
 
     blink() {
-        this.setValue(this.isOn ? 20 + Math.random() * 30 : Math.random() * 255 * this.pin.max);
+        this.setValue(this.isOn ? 100 + Math.random() * 60 : Math.random() * 255 * this.pin.max);
         this.isOn = !this.isOn;
-        this.timeout = setTimeout(this.blink, 80 + Math.random() * 200);
+        this.timeout = setTimeout(this.blink, 130 + Math.random() * 100);
     }
 
     stop() {
