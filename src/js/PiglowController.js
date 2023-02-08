@@ -198,7 +198,7 @@ class PiglowController {
                     }
                 });
 
-                this.pinMap['1'].changeLight(LightTypes.BRIGHT, this.globalMax);
+                this.pinMap['1'].changeLight(LightTypes.MAX, this.globalMax);
                 this.pinMap['2'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['3'].changeLight(LightTypes.STANDARD, this.globalMax);
                 this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
