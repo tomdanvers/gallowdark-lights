@@ -8,7 +8,7 @@ class LightMax extends Light {
     constructor(pi, pin, globalMax) {
         super(pi, pin, globalMax)
 
-        this.type = LightTypes.BRIGHT;
+        this.type = LightTypes.MAX;
         
         this.setValue(255);
     }
