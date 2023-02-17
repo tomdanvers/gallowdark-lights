@@ -101,7 +101,7 @@ class PiglowController {
                 pinId: 'l_2_5',
                 label: 'C4',
                 max: 1,
-                group: GROUPS.UPLIGHT
+                group: GROUPS.FLEXIBLE
             },
             {
                 id: 12,
@@ -258,6 +258,7 @@ class PiglowController {
             } else if (increment < 0) {
                 newGlobalMax = Math.max(0, this.globalMax + increment);
             }
+            console.log(newGlobalMax)
             this.updateGlobalMax(newGlobalMax);
             if (increment > 0 && newGlobalMax === 1) {
                 clearInterval(this.fadeInterval);
@@ -274,7 +275,8 @@ class PiglowController {
     }
 
     updateGlobalMax(value) {
-        if (this.globalMax !== value) {
+        value = Number(value);
+        if (!isNaN(value) && this.globalMax !== value) {
             this.globalMax = value;
             this.pins.forEach((pin) => {
                 if (pin.active) {

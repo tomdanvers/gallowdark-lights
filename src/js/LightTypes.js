@@ -5,5 +5,6 @@ module.exports = {
     PLASMA_CORE: 'plasma-core',
     FAULTY_FLOURESCENT: 'faulty-flourescent',
     STEADY_BLINK: 'steady-blink',
-    FIRE: 'fire'
+    FIRE: 'fire',
+    OFF: 'off'
 };

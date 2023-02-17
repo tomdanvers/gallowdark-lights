@@ -10,6 +10,7 @@ LIGHT_CLASSES[LightTypes.PLASMA_CORE] = require('./lights/PlasmaCore');
 LIGHT_CLASSES[LightTypes.FAULTY_FLOURESCENT] = require('./lights/FaultyFlourescent');
 LIGHT_CLASSES[LightTypes.STEADY_BLINK] = require('./lights/SteadyBlink');
 LIGHT_CLASSES[LightTypes.FIRE] = require('./lights/Fire');
+LIGHT_CLASSES[LightTypes.OFF] = require('./lights/LightOff');
 
 class Pin {
     constructor(index, config, pi) {
