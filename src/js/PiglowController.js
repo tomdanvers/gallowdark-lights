@@ -258,7 +258,6 @@ class PiglowController {
             } else if (increment < 0) {
                 newGlobalMax = Math.max(0, this.globalMax + increment);
             }
-            console.log(newGlobalMax)
             this.updateGlobalMax(newGlobalMax);
             if (increment > 0 && newGlobalMax === 1) {
                 clearInterval(this.fadeInterval);
