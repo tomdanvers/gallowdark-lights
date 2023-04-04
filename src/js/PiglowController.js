@@ -5,7 +5,7 @@ try{
 } catch(e) {
     var glow = require('./piglow-mock');
 }
-
+const fs = require('fs');
 const LightTypes = require('./LightTypes');
 const Pin = require('./Pin');
 const DEFAULT_BRIGHTNESS = 150;
@@ -24,6 +24,14 @@ class PiglowController {
         //     l_1_0: 6, l_1_1: 7, l_1_2: 8, l_1_3: 5, l_1_4: 4, l_1_5: 9,
         //     l_2_0: 17, l_2_1: 16, l_2_2: 15, l_2_3: 13, l_2_4: 11, l_2_5: 10
         // };
+
+
+        let latestState = false;
+        try {
+            latestState = JSON.parse(fs.readFileSync('./data/pin-state-latest.json', {encoding: 'utf-8'}));
+        } catch (error) {
+            console.log('Unable to load latest pin state. Using default.');
+        }
 
         const pinConfig = [
             {
@@ -198,24 +206,31 @@ class PiglowController {
                     }
                 });
 
-                this.pinMap['1'].changeLight(LightTypes.MAX, this.globalMax);
-                this.pinMap['2'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['3'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
-                this.pinMap['5'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
-                this.pinMap['6'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['7'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['8'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
-                this.pinMap['9'].changeLight(LightTypes.BRIGHT, this.globalMax);
-                this.pinMap['10'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['11'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['12'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['13'].changeLight(LightTypes.STEADY_BLINK, this.globalMax);
+                if (latestState) {
+                    latestState.forEach((pin) => {
+                        this.pinMap[pin.index + 1].changeLight(pin.type, this.globalMax);
+                    });
+                } else {
+                    this.pinMap['1'].changeLight(LightTypes.MAX, this.globalMax);
+                    this.pinMap['2'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['3'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+                    this.pinMap['5'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+                    this.pinMap['6'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['7'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['8'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
+                    this.pinMap['9'].changeLight(LightTypes.BRIGHT, this.globalMax);
+                    this.pinMap['10'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['11'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['12'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['13'].changeLight(LightTypes.STEADY_BLINK, this.globalMax);
+                    this.pinMap['15'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['16'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+                    this.pinMap['17'].changeLight(LightTypes.STANDARD, this.globalMax);
+                    this.pinMap['18'].changeLight(LightTypes.BRIGHT, this.globalMax);
+                }
                 this.pinMap['14'].setActive(false);
-                this.pinMap['15'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['16'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
-                this.pinMap['17'].changeLight(LightTypes.STANDARD, this.globalMax);
-                this.pinMap['18'].changeLight(LightTypes.BRIGHT, this.globalMax);
+
 
                 this.fadeIn();
                 
@@ -291,6 +306,8 @@ class PiglowController {
                 this.pins[pin.index].changeLight(pin.type, this.globalMax);
             }
         });
+
+        this.pinStateSave('latest', this.pinsToJSON());
     }
 
     pinsToJSON() {
@@ -304,6 +321,17 @@ class PiglowController {
             }
         });
         return JSON.stringify(pins);
+    }
+
+    pinStateSave(id, json) {
+        // Save state of pins locally so it can be restored...
+        fs.writeFile(`./data/pin-state-${id}.json`, this.pinsToJSON(), 'utf8', (err) => {
+            if (err) {
+                console.log('Failed to Save State JSON!');
+                console.log(err);
+            }
+        });
+
     }
 }
 
