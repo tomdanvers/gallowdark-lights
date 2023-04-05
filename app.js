@@ -11,6 +11,7 @@ hbs.registerHelper('ifEquals', function(arg1, arg2, options) {
 var indexRouter = require('./routes/index');
 var updateLightsRouter = require('./routes/update-lights');
 var shutdownRouter = require('./routes/shutdown');
+var resetRouter = require('./routes/reset');
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/update-lights', updateLightsRouter);
 app.use('/shutdown', shutdownRouter);
+app.use('/reset', resetRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

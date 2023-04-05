@@ -19,8 +19,11 @@
     </ul>
     <div class="controls">
         <input data-global-max type="range" id="globalMax" name="globalMax" min="0" max="1" value="{{globalMax}}" step=".05">
-        <button data-update-lights>Update Lights</button>
-        <button data-shutdown>Shutdown!</button>
+        <button class="button button-update" data-update-lights>Update Lights</button>
+        <div class="buttons-danger">
+            <button class="button button-danger" data-reset>Reset!</button>
+            <button class="button button-danger" data-shutdown>Shutdown!</button>
+        </div>
     </div>
 </div>
 
@@ -93,6 +96,38 @@
                 return res.json();
             }).then((data) => {
                 console.log('Shutting down...');
+            });
+        }
+    });
+
+    const elButtonReset = document.querySelector('[data-reset]');
+    elButtonReset.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        let isSure = window.confirm('Are you sure? Resetting wipes the current light configuration.');
+
+        if (isSure) {
+            fetch('/reset', {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify({reset:true}) // body data type must match "Content-Type" header
+            }).then((res) => {
+                return res.json();
+            }).then((data) => {
+                console.log('Successfully reset lights...');
+                // Use response data to ensure front end select boxes are up to date
+                data.forEach((pin) => {
+                    let elPin = document.querySelector(`[data-pin-index='${pin.index}']`);
+                    const elSelect = elPin.querySelector('[data-light-select]');
+                    elSelect.value = pin.type;
+                });
             });
         }
     });

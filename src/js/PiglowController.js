@@ -210,27 +210,10 @@ class PiglowController {
                     latestState.forEach((pin) => {
                         this.pinMap[pin.index + 1].changeLight(pin.type, this.globalMax);
                     });
+                    this.pinMap['14'].setActive(false);
                 } else {
-                    this.pinMap['1'].changeLight(LightTypes.MAX, this.globalMax);
-                    this.pinMap['2'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['3'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
-                    this.pinMap['5'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
-                    this.pinMap['6'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['7'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['8'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
-                    this.pinMap['9'].changeLight(LightTypes.BRIGHT, this.globalMax);
-                    this.pinMap['10'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['11'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['12'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['13'].changeLight(LightTypes.STEADY_BLINK, this.globalMax);
-                    this.pinMap['15'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['16'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
-                    this.pinMap['17'].changeLight(LightTypes.STANDARD, this.globalMax);
-                    this.pinMap['18'].changeLight(LightTypes.BRIGHT, this.globalMax);
-                }
-                this.pinMap['14'].setActive(false);
-
+                    this.reset();
+                }             
 
                 this.fadeIn();
                 
@@ -332,6 +315,33 @@ class PiglowController {
             }
         });
 
+    }
+
+    reset() {
+        // Default pins/lights
+        this.pinMap['1'].changeLight(LightTypes.MAX, this.globalMax);
+        this.pinMap['2'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['3'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['4'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+        this.pinMap['5'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+        this.pinMap['6'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['7'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['8'].changeLight(LightTypes.PLASMA_CORE, this.globalMax);
+        this.pinMap['9'].changeLight(LightTypes.BRIGHT, this.globalMax);
+        this.pinMap['10'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['11'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['12'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['13'].changeLight(LightTypes.STEADY_BLINK, this.globalMax);
+        this.pinMap['14'].setActive(false);
+        this.pinMap['15'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['16'].changeLight(LightTypes.FAULTY_FLOURESCENT, this.globalMax);
+        this.pinMap['17'].changeLight(LightTypes.STANDARD, this.globalMax);
+        this.pinMap['18'].changeLight(LightTypes.BRIGHT, this.globalMax);
+    }
+    
+    resetAndSave() {
+        this.reset();
+        this.pinStateSave('latest', this.pinsToJSON());
     }
 }
 

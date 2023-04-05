@@ -62,6 +62,19 @@ li {
   padding: 15px 40px;
 }
 
-.controls button {
+.controls .button {
   margin: 5px;
+  background-color: #d2d2d2;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid;
+  padding: 10px;
+}
+
+.controls .button-update {
+  margin-top: 20px;
+}
+
+.controls .button-danger {
+  background-color: #dfb3b3;
 }
